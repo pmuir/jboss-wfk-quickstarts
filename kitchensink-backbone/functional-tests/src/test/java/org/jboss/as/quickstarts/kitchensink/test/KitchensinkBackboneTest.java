@@ -43,10 +43,18 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.jboss.arquillian.graphene.Graphene.*;
 
+/**
+ * Kitchensink Backbone quickstart functional test
+ *
+ * @author Oliver Kiss
+ */
 @RunAsClient
 @RunWith(Arquillian.class)
 public class KitchensinkBackboneTest {
 
+    /**
+     * Injects browser to our test.
+     */
     @Drone
     WebDriver browser;
 
@@ -56,35 +64,67 @@ public class KitchensinkBackboneTest {
     @ArquillianResource
     URL contextPath;
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     *
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive deployment() {
         return Deployments.kitchensink();
     }
 
+    /**
+     * Locator for name field
+     */
     @FindBy(id = "name")
     WebElement nameField;
 
+    /**
+     * Locator for email field
+     */
     @FindBy(id = "email")
     WebElement emailField;
 
+    /**
+     * Locator for phone number field
+     */
     @FindBy(id = "phoneNumber")
-    WebElement phoneFiled;
+    WebElement phoneField;
 
+    /**
+     * Locator for registration button
+     */
     @FindBy(id = "register")
     WebElement registerButton;
 
-    @FindBy(id = "members")
-    WebElement tableMembers;
-
+    /**
+     * Locator for registration success message
+     */
     @FindByJQuery("div#formMsgs span.success")
     WebElement registeredMessageSuccess;
 
+    /**
+     * Locator for members table
+     */
+    @FindBy(id = "members")
+    WebElement tableMembers;
+
+    /**
+     * Locator for rows of the members table
+     */
     @FindByJQuery("#members .member:contains('JSON')")
     List<WebElement> tableMembersRows;
 
+    /**
+     * Locator for columns of the first row of the members table
+     */
     @FindByJQuery("#members .member:contains('JSON'):last div.data")
     List<WebElement> tableMembersRowColumns;
 
+    /**
+     * Locator for name field validation message
+     */
     @FindBy(css = "#name ~ .invalid")
     private WebElement nameErrorMessage;
 
@@ -139,10 +179,6 @@ public class KitchensinkBackboneTest {
      */
     private static final String PHONE_FORMAT_BAD_TOO_SHORT = "123456789";
 
-    /**
-     * This method tests there is no new member in the registration table when
-     * all three input fields are empty.
-     */
     @Test
     @InSequence(1)
     public void testEmptyRegistration() {
@@ -151,10 +187,6 @@ public class KitchensinkBackboneTest {
         assertTrue(new WebElementConditionFactory(registeredMessageSuccess).not().isPresent().apply(browser));
     }
 
-    /**
-     * This method tests registration of the new member with the name of bad
-     * formats.
-     */
     @Test
     @InSequence(2)
     public void testRegistrationWithBadNameFormat() {
@@ -173,10 +205,6 @@ public class KitchensinkBackboneTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the email of bad
-     * format.
-     */
     @Test
     @InSequence(3)
     public void testRegistrationWithBadEmailFormat() {
@@ -193,10 +221,6 @@ public class KitchensinkBackboneTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the phone of bad
-     * format
-     */
     @Test
     @InSequence(4)
     public void testRegistrationWithBadPhoneFormat() {
@@ -225,10 +249,6 @@ public class KitchensinkBackboneTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests regular registration process and tests XML REST request
-     * by clicking at the link of the newly registered user.
-     */
     @Test
     @InSequence(5)
     public void testRegularRegistration() {
@@ -251,20 +271,17 @@ public class KitchensinkBackboneTest {
     /**
      * This helper method sets values into the according input fields.
      *
-     * @param name
-     *            name to set into the name input field
-     * @param email
-     *            email to set into the email input field
-     * @param phone
-     *            phone to set into the phone input field
+     * @param name  name to set into the name input field
+     * @param email email to set into the email input field
+     * @param phone phone to set into the phone input field
      */
     private void setInputFields(String name, String email, String phone) {
         nameField.clear();
         nameField.sendKeys(name);
         emailField.clear();
         emailField.sendKeys(email);
-        phoneFiled.clear();
-        phoneFiled.sendKeys(phone);
+        phoneField.clear();
+        phoneField.sendKeys(phone);
     }
 
 }

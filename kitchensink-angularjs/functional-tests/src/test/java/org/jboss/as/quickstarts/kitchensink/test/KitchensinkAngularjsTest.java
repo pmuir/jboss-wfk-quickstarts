@@ -44,12 +44,17 @@ import static junit.framework.Assert.*;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 /**
- * 
+ * Kitchensink Angular.js quickstart functional test
+ *
+ * @author Oliver Kiss
  */
 @RunAsClient
 @RunWith(Arquillian.class)
 public class KitchensinkAngularjsTest {
 
+    /**
+     * Injects browser to our test.
+     */
     @Drone
     WebDriver browser;
 
@@ -59,38 +64,73 @@ public class KitchensinkAngularjsTest {
     @ArquillianResource
     URL contextPath;
 
+    /**
+     * Injects JavascriptExecutor for executing javascript on opened page
+     */
     @ArquillianResource
     JavascriptExecutor javascript;
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     *
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive deployment() {
         return Deployments.kitchensink();
     }
 
+    /**
+     * Locator for name field
+     */
     @FindBy(id = "name")
     WebElement nameField;
 
+    /**
+     * Locator for email field
+     */
     @FindBy(id = "email")
     WebElement emailField;
 
+    /**
+     * Locator for phone number field
+     */
     @FindBy(id = "phoneNumber")
-    WebElement phoneFiled;
+    WebElement phoneField;
 
+    /**
+     * Locator for registration button
+     */
     @FindBy(id = "register")
     WebElement registerButton;
 
+    /**
+     * Locator for registration success message
+     */
     @FindByJQuery("ul.success li:first")
     WebElement registeredMessageSuccess;
 
+    /**
+     * Locator for rows of the members table
+     */
     @FindByJQuery("table tr.ng-scope")
     List<WebElement> tableMembersRows;
 
+    /**
+     * Locator for columns of the first row of the members table
+     */
     @FindByJQuery("table tr.ng-scope:first td")
     List<WebElement> tableMembersRowColumns;
 
+    /**
+     * Locator for name field validation message
+     */
     @FindByJQuery("span[ng-show='errors.name']")
     WebElement nameErrorMessage;
 
+    /**
+     * Locator for registration form
+     */
     @FindBy(id = "reg")
     WebElement registrationForm;
 
@@ -210,15 +250,15 @@ public class KitchensinkAngularjsTest {
     public void testRegistrationWithBadPhoneFormat() {
         browser.get(contextPath.toString());
         setInputFields(NAME_FORMAT_OK, EMAIL_FORMAT_OK, PHONE_FORMAT_BAD_ILLEGAL_CHARS);
-        assertFalse(isValid(phoneFiled));
+        assertFalse(isValid(phoneField));
 
         browser.get(contextPath.toString());
         setInputFields(NAME_FORMAT_OK, EMAIL_FORMAT_OK, PHONE_FORMAT_BAD_TOO_SHORT);
-        assertFalse(isValid(phoneFiled));
+        assertFalse(isValid(phoneField));
 
         browser.get(contextPath.toString());
         setInputFields(NAME_FORMAT_OK, EMAIL_FORMAT_OK, PHONE_FORMAT_BAD_TOO_LONG);
-        assertFalse(isValid(phoneFiled));
+        assertFalse(isValid(phoneField));
     }
 
     /**
@@ -244,7 +284,8 @@ public class KitchensinkAngularjsTest {
 
     /**
      * This helper method sets values into the according input fields.
-     * @param name name to set into the name input field
+     *
+     * @param name  name to set into the name input field
      * @param email email to set into the email input field
      * @param phone phone to set into the phone input field
      */
@@ -253,10 +294,16 @@ public class KitchensinkAngularjsTest {
         nameField.sendKeys(name);
         emailField.clear();
         emailField.sendKeys(email);
-        phoneFiled.clear();
-        phoneFiled.sendKeys(phone);
+        phoneField.clear();
+        phoneField.sendKeys(phone);
     }
 
+    /**
+     * Helper method for executing checkValidity() javascript method from HTML5 form validation API
+     *
+     * @param element Element to be checked
+     * @return Element validity
+     */
     private boolean isValid(WebElement element) {
         return (Boolean) javascript.executeScript("return arguments[0].checkValidity()", element);
     }

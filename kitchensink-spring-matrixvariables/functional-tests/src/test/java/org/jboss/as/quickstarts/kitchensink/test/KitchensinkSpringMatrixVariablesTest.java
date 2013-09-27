@@ -42,10 +42,17 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.jboss.arquillian.graphene.Graphene.guardHttp;
 
+/**
+ * Kitchensink Spring Matrix Variables quickstart functional test
+ * @author Oliver Kiss
+ */
 @RunAsClient
 @RunWith(Arquillian.class)
 public class KitchensinkSpringMatrixVariablesTest {
 
+    /**
+     * Injects browser to our test.
+     */
     @Drone
     WebDriver browser;
 
@@ -55,35 +62,66 @@ public class KitchensinkSpringMatrixVariablesTest {
     @ArquillianResource
     URL contextPath;
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive deployment() {
         return Deployments.kitchensink();
     }
 
+    /**
+     * Locator for name field
+     */
     @FindBy(id = "name")
     WebElement nameField;
 
+    /**
+     * Locator for email field
+     */
     @FindBy(id = "email")
     WebElement emailField;
 
+    /**
+     * Locator for phone number field
+     */
     @FindBy(id = "phoneNumber")
     WebElement phoneField;
 
+    /**
+     * Locator for registration button
+     */
     @FindByJQuery("input.register")
     WebElement registerButton;
 
+    /**
+     * Locator for rows of the members table
+     */
     @FindByJQuery("table.simpletablestyle:first tbody tr")
     List<WebElement> tableMembersRows;
 
+    /**
+     * Locator for columns of the first row of the members table
+     */
     @FindByJQuery("table.simpletablestyle:first tbody tr:first td")
     List<WebElement> tableMembersRowColumns;
 
+    /**
+     * Locator for name field validation message
+     */
     @FindBy(id = "name.errors")
     WebElement nameErrorMessage;
 
+    /**
+     * Locator for email field validation message
+     */
     @FindBy(id = "email.errors")
     WebElement emailErrorMessage;
 
+    /**
+     * Locator for phone number field validation message
+     */
     @FindBy(id = "phoneNumber.errors")
     WebElement phoneErrorMessage;
 
@@ -138,11 +176,6 @@ public class KitchensinkSpringMatrixVariablesTest {
      */
     private static final String PHONE_FORMAT_BAD_TOO_SHORT = "123456789";
 
-
-    /**
-     * This method tests there is no new member in the registration table when
-     * all three input fields are empty.
-     */
     @Test
     @InSequence(1)
     public void testEmptyRegistration() {
@@ -154,10 +187,6 @@ public class KitchensinkSpringMatrixVariablesTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the name of bad
-     * formats.
-     */
     @Test
     @InSequence(2)
     public void testRegistrationWithBadNameFormat() {
@@ -174,10 +203,6 @@ public class KitchensinkSpringMatrixVariablesTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the email of bad
-     * format.
-     */
     @Test
     @InSequence(3)
     public void testRegistrationWithBadEmailFormat() {
@@ -194,10 +219,6 @@ public class KitchensinkSpringMatrixVariablesTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the phone of bad
-     * format
-     */
     @Test
     @InSequence(4)
     public void testRegistrationWithBadPhoneFormat() {
@@ -220,9 +241,6 @@ public class KitchensinkSpringMatrixVariablesTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests regular registration process
-     */
     @Test
     @InSequence(5)
     public void testRegularRegistration() {

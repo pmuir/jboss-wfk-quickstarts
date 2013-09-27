@@ -36,13 +36,12 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONStringer;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.net.URL;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test for REST API of the application
@@ -62,10 +61,17 @@ public class RESTTest {
 
     private final DefaultHttpClient httpClient = new DefaultHttpClient();
 
+    /**
+     * Injects URL on which application is running.
+     */
     @ArquillianResource
     URL contextPath;
 
-
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     *
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive deployment() {
         return Deployments.kitchensink();
@@ -97,7 +103,7 @@ public class RESTTest {
                 .endObject().toString();
         post.setEntity(new StringEntity(newMemberJSON));
 
-        HttpResponse response =  httpClient.execute(post);
+        HttpResponse response = httpClient.execute(post);
 
         assertEquals(200, response.getStatusLine().getStatusCode());
     }
@@ -105,8 +111,6 @@ public class RESTTest {
     @Test
     @InSequence(3)
     public void testGetAllMembers() throws Exception {
-        DefaultHttpClient httpClient = this.httpClient;
-
         HttpResponse response = httpClient.execute(new HttpGet(contextPath.toString() + API_PATH));
         assertEquals(200, response.getStatusLine().getStatusCode());
 

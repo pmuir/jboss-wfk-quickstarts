@@ -26,7 +26,15 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import java.io.File;
 
+/**
+ * Contains deployment method shared between tests
+ * @author Oliver Kiss
+ */
 public class Deployments {
+
+    /**
+     * Specifies relative path to the war of built application in the main project.
+     */
     private static final String KITCHENSINK = "../target/jboss-kitchensink-spring-springmvctest.war";
 
     /**

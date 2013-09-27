@@ -29,7 +29,6 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -40,7 +39,7 @@ import java.io.File;
 import java.net.URL;
 
 import static org.jboss.arquillian.graphene.Graphene.guardAjax;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests GWT Hello World quickstart
@@ -74,8 +73,14 @@ public class HelloworldGWTTest {
      */
     private static final String NAME = "John Doe";
 
+    /**
+     * Specifies relative path to the war of built application in the main project.
+     */
     private static final String DEPLOYMENT_WAR = "../target/jboss-helloworld-gwt.war";
 
+    /**
+     * Injects browser to our test.
+     */
     @Drone
     WebDriver browser;
 
@@ -85,6 +90,11 @@ public class HelloworldGWTTest {
     @ArquillianResource
     URL contextPath;
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     *
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive helloWorld() {
         return ShrinkWrap.createFromZipFile(WebArchive.class, new File(DEPLOYMENT_WAR));

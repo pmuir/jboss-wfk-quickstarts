@@ -42,10 +42,18 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 import static org.jboss.arquillian.graphene.Graphene.guardHttp;
 
+/**
+ * Kitchensink Spring AsyncRequestMapping quickstart functional test
+ *
+ * @author Oliver Kiss
+ */
 @RunAsClient
 @RunWith(Arquillian.class)
 public class KitchensinkSpringAsyncRequestMappingTest {
 
+    /**
+     * Injects browser to our test.
+     */
     @Drone
     WebDriver browser;
 
@@ -55,35 +63,67 @@ public class KitchensinkSpringAsyncRequestMappingTest {
     @ArquillianResource
     URL contextPath;
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     *
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive deployment() {
         return Deployments.kitchensink();
     }
 
+    /**
+     * Locator for name field
+     */
     @FindBy(id = "name")
     WebElement nameField;
 
+    /**
+     * Locator for email field
+     */
     @FindBy(id = "email")
     WebElement emailField;
 
+    /**
+     * Locator for phone number field
+     */
     @FindBy(id = "phoneNumber")
     WebElement phoneField;
 
+    /**
+     * Locator for registration button
+     */
     @FindByJQuery("input.register")
     WebElement registerButton;
 
+    /**
+     * Locator for rows of the members table
+     */
     @FindByJQuery("table.simpletablestyle:first tbody tr")
     List<WebElement> tableMembersRows;
 
+    /**
+     * Locator for columns of the first row of the members table
+     */
     @FindByJQuery("table.simpletablestyle:first tbody tr:first td")
     List<WebElement> tableMembersRowColumns;
 
+    /**
+     * Locator for name field validation message
+     */
     @FindBy(id = "name.errors")
     WebElement nameErrorMessage;
 
+    /**
+     * Locator for email field validation message
+     */
     @FindBy(id = "email.errors")
     WebElement emailErrorMessage;
 
+    /**
+     * Locator for phone number field validation message
+     */
     @FindBy(id = "phoneNumber.errors")
     WebElement phoneErrorMessage;
 
@@ -221,7 +261,8 @@ public class KitchensinkSpringAsyncRequestMappingTest {
 
     /**
      * This helper method sets values into the according input fields.
-     * @param name name to set into the name input field
+     *
+     * @param name  name to set into the name input field
      * @param email email to set into the email input field
      * @param phone phone to set into the phone input field
      */

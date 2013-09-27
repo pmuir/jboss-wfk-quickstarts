@@ -26,9 +26,23 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 import java.io.File;
 
+/**
+ * Contains deployment method shared between tests
+ *
+ * @author Oliver Kiss
+ */
 public class Deployments {
+
+    /**
+     * Specifies relative path to the war of built application in the main project.
+     */
     private static final String KITCHENSINK = "../target/jboss-kitchensink-spring-basic.war";
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     *
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     public static WebArchive kitchensink() {
         return ShrinkWrap.createFromZipFile(WebArchive.class, new File(KITCHENSINK));
     }

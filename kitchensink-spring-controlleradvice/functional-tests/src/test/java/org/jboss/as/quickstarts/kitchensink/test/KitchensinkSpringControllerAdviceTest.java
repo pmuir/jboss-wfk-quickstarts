@@ -43,10 +43,17 @@ import static junit.framework.Assert.assertTrue;
 import static org.jboss.arquillian.graphene.Graphene.guardHttp;
 import static org.jboss.arquillian.graphene.Graphene.waitGui;
 
+/**
+ * Kitchensink Spring ControllerAdvice quickstart functional test
+ * @author Oliver Kiss
+ */
 @RunAsClient
 @RunWith(Arquillian.class)
 public class KitchensinkSpringControllerAdviceTest {
 
+    /**
+     * Injects browser to our test.
+     */
     @Drone
     WebDriver browser;
 
@@ -56,44 +63,84 @@ public class KitchensinkSpringControllerAdviceTest {
     @ArquillianResource
     URL contextPath;
 
+    /**
+     * Creates deployment which is sent to the container upon test's start.
+     * @return war file which is deployed while testing, the whole application in our case
+     */
     @Deployment(testable = false)
     public static WebArchive deployment() {
         return Deployments.kitchensink();
     }
 
+    /**
+     * Locator for name field
+     */
     @FindBy(id = "name")
     WebElement nameField;
 
+    /**
+     * Locator for email field
+     */
     @FindBy(id = "email")
     WebElement emailField;
 
+    /**
+     * Locator for phone number field
+     */
     @FindBy(id = "phoneNumber")
     WebElement phoneField;
 
+    /**
+     * Locator for date picker
+     */
     @FindBy(id = "datepicker")
     WebElement datePicker;
 
+    /**
+     * Locator for registration button
+     */
     @FindByJQuery("input.register")
     WebElement registerButton;
 
+    /**
+     * Locator for rows of the members table
+     */
     @FindByJQuery("table.simpletablestyle:first tbody tr")
     List<WebElement> tableMembersRows;
 
+    /**
+     * Locator for columns of the first row of the members table
+     */
     @FindByJQuery("table.simpletablestyle:first tbody tr:first td")
     List<WebElement> tableMembersRowColumns;
 
+    /**
+     * Locator for name field validation message
+     */
     @FindBy(id = "name.errors")
     WebElement nameErrorMessage;
 
+    /**
+     * Locator for email field validation message
+     */
     @FindBy(id = "email.errors")
     WebElement emailErrorMessage;
 
+    /**
+     * Locator for phone number field validation message
+     */
     @FindBy(id = "phoneNumber.errors")
     WebElement phoneErrorMessage;
 
+    /**
+     * Locator for date validation message
+     */
     @FindBy(id = "date.errors")
     WebElement dateErrorMessage;
 
+    /**
+     * Locator for today's date in the date picker
+     */
     @FindByJQuery("a.ui-state-highlight")
     WebElement today;
 
@@ -148,11 +195,6 @@ public class KitchensinkSpringControllerAdviceTest {
      */
     private static final String PHONE_FORMAT_BAD_TOO_SHORT = "123456789";
 
-
-    /**
-     * This method tests there is no new member in the registration table when
-     * all three input fields are empty.
-     */
     @Test
     @InSequence(1)
     public void testEmptyRegistration() {
@@ -165,10 +207,6 @@ public class KitchensinkSpringControllerAdviceTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the name of bad
-     * formats.
-     */
     @Test
     @InSequence(2)
     public void testRegistrationWithBadNameFormat() {
@@ -185,10 +223,6 @@ public class KitchensinkSpringControllerAdviceTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the email of bad
-     * format.
-     */
     @Test
     @InSequence(3)
     public void testRegistrationWithBadEmailFormat() {
@@ -205,10 +239,6 @@ public class KitchensinkSpringControllerAdviceTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests registration of the new member with the phone of bad
-     * format
-     */
     @Test
     @InSequence(4)
     public void testRegistrationWithBadPhoneFormat() {
@@ -231,10 +261,6 @@ public class KitchensinkSpringControllerAdviceTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-
-    /**
-     * Tests registration of the new member without registration date
-     */
     @Test
     @InSequence(5)
     public void testRegistrationWithoutDate() {
@@ -245,9 +271,6 @@ public class KitchensinkSpringControllerAdviceTest {
         assertEquals("Member should not be registered", 1, tableMembersRows.size());
     }
 
-    /**
-     * This method tests regular registration process
-     */
     @Test
     @InSequence(6)
     public void testRegularRegistration() {
